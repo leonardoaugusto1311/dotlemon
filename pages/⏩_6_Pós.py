@@ -70,7 +70,7 @@ if st.button("Enviar"):
         faixa3 = 0
         st.write(f'Comissão Faixa 1 R$: {faixa1}')
     else:
-        faixa1 = (cliente_p2 - (cliente_p2 * (percentuais_politicas)))*(comissao_p2/100)
+        faixa1 = (cliente_p2 - (cliente_p2 *percentuais_politicas))*(comissao_p2/100)
         st.write(f'Comissão Faixa 1 R$: {faixa1}')
 
 
