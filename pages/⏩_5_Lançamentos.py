@@ -65,7 +65,8 @@ if st.button("Enviar"):
 
     if fat_lancamento <= cliente_p:
         faixa1 = (fat_lancamento - despesas) * (comissao_p/100)
-        
+        faixa2 = 0 
+        faixa3 = 0
         st.write(f'Comissão Faixa 1 R$: {faixa1}')
     else:
         faixa1 = (cliente_p - (cliente_p * ((traf/100) + (plat/100) + (imp/100))))*(comissao_p/100)
@@ -73,16 +74,19 @@ if st.button("Enviar"):
 #---------------------------------------------------------------------------------------
     if fat_lancamento <= cliente_p:
         st.write(f"Comissão Faixa 2 R$: {0}")
+        faixa2 = 0 
+        faixa3 = 0
                  
     elif fat_lancamento <= cliente_m : 
        faixa2 = (((fat_lancamento-cliente_p) - (despesas - (cliente_p*((traf/100) + (plat/100) + (imp /100)))))*(comissao_m/100) )  
        st.write(f' Comissão Faixa 2 R$: {faixa2}')
-    
+       faixa3 = 0
     else : 
        faixa2 = (cliente_m-cliente_p+imp_valor-(cliente_m*((traf/100) + (plat/100) + (imp /100))))*(comissao_g/100)
        #st.write((cliente_m-cliente_p+imp_valor-(cliente_m*((traf/100) + (plat/100) + (imp /100))))*(comissao_g/100))
        st.write(f"Comissão Faixa 2 R$: {faixa2}")
        #st.write((traf/100) + (plat/100) + (imp /100))
+       faixa3 = 0
  #------------------------------------------------------------ 
  # faixa 3   
     if fat_lancamento > cliente_m  : 
