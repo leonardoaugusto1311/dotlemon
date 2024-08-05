@@ -93,7 +93,7 @@ if st.button("Enviar"):
        faixa3 = 0
        st.write(cliente_m)
        st.write(cliente_p)
-       st.write(fat_lancamento-cliente_p)
+       st.write(cliente_m-cliente_p)
        st.write(depesas_clientem-depesas_clientep)
  #------------------------------------------------------------ 
 
