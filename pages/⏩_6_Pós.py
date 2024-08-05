@@ -76,7 +76,7 @@ if st.button("Enviar"):
         st.write(f"Comissão Faixa 2 R$: {0}")
                  
     elif fat_lancamento_pos <= comissao_m2 : 
-       faixa2 = (((fat_lancamento_pos-cliente_p2) - (despesas_Pos - (cliente_p2*((traf_pos/100) + (plat_pos/100) + (imp_pos /100)))))*(comissao_m/100) )  
+       faixa2 = (((fat_lancamento_pos-cliente_p2) - (despesas_Pos - (cliente_p2*((traf_pos/100) + (plat_pos/100) + (imp_pos /100)))))*(comissao_m2/100) )  
        st.write(f' Comissão Faixa 2 R$: {faixa2}')
     
     else : 
