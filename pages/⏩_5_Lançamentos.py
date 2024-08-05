@@ -92,10 +92,11 @@ if st.button("Enviar"):
         faixa3 = ((fat_lancamento-cliente_m)-(despesas - (cliente_m*((traf/100) + (plat/100) + (imp /100)))))*(comissao_g/100)   
         st.write(f'Comissão Faixa 3 R$: {faixa3}')              
     
+    umenosaliquota = 1-(aliquota_imposto/100)
     comissao_recebida = faixa1+faixa2+faixa3
     st.write(f'Recebido a título de comissão R$: {comissao_recebida}')
     st.write(contribuicao_cliente)
-    st.write(1-(aliquota_imposto/100))
+    st.write(umenosaliquota)
     tx_fix_mensal  = round(contribuicao_cliente/(1-(aliquota_imposto/100)),2)
     st.write(f'Taxa Fixa Mensal: {tx_fix_mensal}')
     total_recebido = tx_fix_mensal*projeto_meses+comissao_recebida
