@@ -85,24 +85,30 @@ if st.button("Enviar"):
     elif fat_lancamento <= cliente_m : 
        parte1 = fat_lancamento - cliente_p
        subtracao_despesas = despesas-depesas_clientep
-       faixa3 = (parte1-subtracao_despesas)*(comissao_m/100)
-       st.write(f'Comissão Faixa 2 : R${faixa3}')
+       faixa2 = (parte1-subtracao_despesas)*(comissao_m/100)
+       st.write(f'Comissão Faixa 2 : R${faixa2}')
     else : 
        
        #st.write(percentuais_politicas)
        faixa3 = 0
        subtracao_faixas = cliente_m-cliente_p
        subtracao_despesas = depesas_clientem-depesas_clientep
-       faixa3 = (subtracao_faixas-subtracao_despesas)*(comissao_m/100)
-       st.write(f'Comissão Faixa 2 : R${faixa3}')
+       faixa2 = (subtracao_faixas-subtracao_despesas)*(comissao_m/100)
+       st.write(f'Comissão Faixa 2 : R${faixa2}')
  #------------------------------------------------------------ 
 
 
  # faixa 3   
     if fat_lancamento > cliente_m  : 
-        faixa3 = ((fat_lancamento-cliente_m)-(despesas - (cliente_m*(percentuais_politicas))))*(comissao_g/100)   
-        st.write(f'Comissão Faixa 3 R$: {faixa3}')              
-    
+        parte1 = fat_lancamento - cliente_m
+        subtracao_despesas = despesas-depesas_clientem
+        faixa3 = (parte1-subtracao_despesas)*(comissao_g/100)
+        st.write(f'Comissão Faixa 3 : R${faixa3}')
+
+
+
+
+
     umenosaliquota = 1-(aliquota_imposto/100)
     #comissao_recebida = faixa1+faixa2+faixa3
     #st.write(f'Recebido a título de comissão R$: {comissao_recebida}')
