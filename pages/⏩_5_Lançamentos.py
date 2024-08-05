@@ -81,7 +81,7 @@ if st.button("Enviar"):
        st.write(f' Comissão Faixa 2 R$: {faixa2}')
        faixa3 = 0
     else : 
-       faixa2 = (cliente_m-cliente_p+despesas-(cliente_m*((traf/100) + (plat/100) + (imp /100))))*(comissao_g/100)
+       faixa2 = (cliente_m-cliente_p+((cliente_m*((traf/100) + (plat/100) + (imp /100)))-(cliente_m*((traf/100) + (plat/100) + (imp /100)))))*(comissao_g/100)
        #st.write((cliente_m-cliente_p+imp_valor-(cliente_m*((traf/100) + (plat/100) + (imp /100))))*(comissao_g/100))
        st.write(f"Comissão Faixa 2 R$: {faixa2}")
        #st.write((traf/100) + (plat/100) + (imp /100))
