@@ -95,5 +95,5 @@ if st.button("Enviar"):
     st.write(f'Recebido a título de comissão R$: {comissao_recebida_pos}')
     tx_fix_mensal_pos  = round(contribuicao_cliente/(1-(aliquota_imposto/100)),2)
     st.write(f'Taxa Fixa Mensal: {tx_fix_mensal_pos}')
-    total_recebido_pos = tx_fix_mensal_pos*projeto_meses_pos+comissao_recebida_pos
+    total_recebido_pos = round(tx_fix_mensal_pos*projeto_meses_pos+comissao_recebida_pos,2)
     st.write(f'Total Recebido no Projeto: {total_recebido_pos}')
