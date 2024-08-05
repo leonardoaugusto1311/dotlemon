@@ -113,7 +113,7 @@ if st.button("Enviar"):
     comissao_recebida = faixa1+faixa2+faixa3
     st.write(f'Recebido a título de comissão R$: {comissao_recebida}')
 
-    #tx_fix_mensal  = round(contribuicao_cliente/umenosaliquota,2)
-    #st.write(f'Taxa Fixa Mensal: {tx_fix_mensal}')
+    tx_fix_mensal  = round(contribuicao_cliente/umenosaliquota,2)
+    st.write(f'Taxa Fixa Mensal: {tx_fix_mensal}')
     #total_recebido = tx_fix_mensal*projeto_meses+comissao_recebida
     #st.write(f'Total Recebido no Projeto: {total_recebido}')
