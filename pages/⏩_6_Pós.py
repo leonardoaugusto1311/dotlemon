@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="Pós",
     page_icon="🟢"
 )
-st.image(r"C:\Users\user\Desktop\Projetos\Dot_lemon\dotlemon logo.png", width=200)
+#st.image(r"C:\Users\user\Desktop\Projetos\Dot_lemon\dotlemon logo.png", width=200)
 st.title('Pós') # título
 st.info('🟡 Preencha os campos com as informações solicitadas 🟡') # informativo
 
