@@ -73,8 +73,8 @@ if st.button("Enviar"):
 
 
 #---------------------------------------------------------------------------------------
-    depesas_clientep = despesas*((traf/100) + (plat/100) + (imp/100))
-    depesas_clientem = despesas*((traf/100) + (plat/100) + (imp/100))
+    depesas_clientep = cliente_p*((traf/100) + (plat/100) + (imp/100))
+    depesas_clientem = cliente_m*((traf/100) + (plat/100) + (imp/100))
 
     
 
@@ -86,11 +86,11 @@ if st.button("Enviar"):
        st.write(fat_lancamento-cliente_p)
        st.write(depesas_clientem-depesas_clientep)
     else : 
-       faixa2 = (cliente_m-cliente_p+((cliente_m*(percentuais_politicas))-(cliente_m*(percentuais_politicas))))*(comissao_g/100)
-       st.write((cliente_m-cliente_p+-(cliente_m*(percentuais_politicas)))*(comissao_g/100))
-       st.write(f"Comissão Faixa 2 R$: {faixa2}")
+       
        #st.write(percentuais_politicas)
        faixa3 = 0
+       st.write(fat_lancamento-cliente_p)
+       st.write(depesas_clientem-depesas_clientep)
  #------------------------------------------------------------ 
 
 
