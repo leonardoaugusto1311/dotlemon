@@ -70,7 +70,7 @@ if st.button("Enviar"):
         faixa3 = 0
         st.write(f'Comissão Faixa 1 R$: {faixa1}')
     else:
-        faixa1 = (cliente_p2 - (cliente_p2 *percentuais_politicas))*(comissao_p2/100)
+        faixa1 = (cliente_p2 - (cliente_p2 * (percentuais_politicas)))*(comissao_p2/100)
         st.write(f'Comissão Faixa 1 R$: {faixa1}')
 
 
@@ -79,6 +79,7 @@ if st.button("Enviar"):
     depesas_clientem = cliente_m2*((traf_pos/100) + (plat_pos/100) + (imp_pos/100))
 
     
+
     if fat_lancamento_pos <= cliente_p2:
         faixa2 = 0 
         faixa3 = 0
@@ -95,20 +96,18 @@ if st.button("Enviar"):
        subtracao_faixas = cliente_m2-cliente_p2
        subtracao_despesas = depesas_clientem-depesas_clientep
        faixa2 = (subtracao_faixas-subtracao_despesas)*(comissao_m2/100)
-       st.write(subtracao_faixas)
-       st.write(subtracao_despesas)
        st.write(f'Comissão Faixa 2 : R${faixa2}')
  #------------------------------------------------------------ 
 
 
  # faixa 3   
-    if fat_lancamento_pos > cliente_m2  : 
+    if fat_lancamento_pos > cliente_m2 : 
         parte1 = fat_lancamento_pos - cliente_m2
         subtracao_despesas = despesas_Pos-depesas_clientem
         faixa3 = (parte1-subtracao_despesas)*(comissao_g2/100)
         st.write(f'Comissão Faixa 3 : R${faixa3}')
     else : 
-        faixa3 = 0 
+        faixa3 = 0
 
 
 
@@ -120,4 +119,4 @@ if st.button("Enviar"):
     tx_fix_mensal  = round(contribuicao_cliente/umenosaliquota,2)
     st.write(f'Taxa Fixa Mensal: {tx_fix_mensal}')
     total_recebido = tx_fix_mensal*projeto_meses_pos+comissao_recebida
-    st.write(f'Total Recebido no Projeto: {total_recebido}')
+    st.write(f'Total Recebido no Projeto: R${round(total_recebido,2)}')
