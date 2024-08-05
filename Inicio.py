@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
 import base64
 st.image(r"C:\Users\user\Desktop\Projetos\Dot_lemon\dotlemon logo.png", width=200)
 
