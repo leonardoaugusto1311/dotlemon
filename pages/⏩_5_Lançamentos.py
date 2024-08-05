@@ -104,7 +104,8 @@ if st.button("Enviar"):
         subtracao_despesas = despesas-depesas_clientem
         faixa3 = (parte1-subtracao_despesas)*(comissao_g/100)
         st.write(f'Comissão Faixa 3 : R${faixa3}')
-
+    else : 
+        faixa3 = 0
 
 
 
