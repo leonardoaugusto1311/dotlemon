@@ -84,7 +84,7 @@ if st.button("Enviar"):
                  
     elif fat_lancamento <= cliente_m : 
        st.write(fat_lancamento)
-       st.write(cliente_p)
+       #st.write(cliente_p)
        #st.write(fat_lancamento-cliente_p)
        #st.write(depesas_clientem-depesas_clientep)
     else : 
