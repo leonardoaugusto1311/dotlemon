@@ -85,7 +85,7 @@ if st.button("Enviar"):
     elif fat_lancamento <= cliente_m : 
        parte1 = fat_lancamento - cliente_p
        subtracao_despesas = despesas-depesas_clientep
-       faixa3 = (parte1-subtracao_despesas)*(cliente_m/100)
+       faixa3 = (parte1-subtracao_despesas)*(comissao_m/100)
        st.write(f'Comissão Faixa 2 : R${faixa3}')
     else : 
        
