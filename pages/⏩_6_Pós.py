@@ -60,7 +60,7 @@ if st.button("Enviar"):
     st.write(f'Tráfego R$: {traf_pos_valor} ')
     st.write(f'Plataforma R$: {plat_pos_valor} ')
     st.write(f'Imposto R$: {imp_valor} ')
-    st.write(f'Despesas: {despesas_Pos} ')
+    st.write(f'Despesas R$: {despesas_Pos} ')
 
     if fat_lancamento_pos <= cliente_p2:
         faixa1 = (fat_lancamento_pos - despesas_Pos) * (comissao_p2/100)
