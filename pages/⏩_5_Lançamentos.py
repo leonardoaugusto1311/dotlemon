@@ -34,13 +34,13 @@ if st.button("Enviar"):
     projeto_meses = st.session_state['projeto_meses']
     fat_lancamento = st.session_state['fat_lancamento']
     traf = st.session_state['traf']
-    st.session_state['traf_valor'] = round(fat_lancamento * (traf/100), 2)
+    st.session_state['traf_valor'] = round(fat_lancamento * (traf/100), 3)
     traf_valor = st.session_state['traf_valor']
     plat = st.session_state['plat']
-    st.session_state['plat_valor'] = round(fat_lancamento * (plat/100), 2)
+    st.session_state['plat_valor'] = round(fat_lancamento * (plat/100), 3)
     plat_valor = st.session_state['plat_valor']
     imp = st.session_state['imp']
-    st.session_state['imp_valor'] = round(fat_lancamento * (imp/100), 2)
+    st.session_state['imp_valor'] = round(fat_lancamento * (imp/100), 3)
     imp_valor = st.session_state['imp_valor']
     st.session_state['depesas'] = traf_valor+plat_valor+imp_valor
     despesas = st.session_state['depesas']
@@ -69,7 +69,7 @@ if st.button("Enviar"):
         faixa3 = 0
         st.write(f'Comissão Faixa 1 R$: {faixa1}')
     else:
-        faixa1 = round((cliente_p - (cliente_p * ((traf/100) + (plat/100) + (imp/100))))*(comissao_p/100),2)
+        faixa1 = (cliente_p - (cliente_p * ((traf/100) + (plat/100) + (imp/100))))*(comissao_p/100)
         st.write(f'Comissão Faixa 1 R$: {faixa1}')
 #---------------------------------------------------------------------------------------
     if fat_lancamento <= cliente_p:
@@ -77,11 +77,11 @@ if st.button("Enviar"):
         faixa3 = 0
                  
     elif fat_lancamento <= cliente_m : 
-       faixa2 = round((((fat_lancamento-cliente_p) - (despesas - (cliente_p*((traf/100) + (plat/100) + (imp /100)))))*(comissao_m/100) ),2)  
+       faixa2 = (((fat_lancamento-cliente_p) - (despesas - (cliente_p*((traf/100) + (plat/100) + (imp /100)))))*(comissao_m/100) )  
        st.write(f' Comissão Faixa 2 R$: {faixa2}')
        faixa3 = 0
     else : 
-       faixa2 = round((cliente_m-cliente_p+imp_valor-(cliente_m*((traf/100) + (plat/100) + (imp /100))))*(comissao_g/100),2)
+       faixa2 = (cliente_m-cliente_p+imp_valor-(cliente_m*((traf/100) + (plat/100) + (imp /100))))*(comissao_g/100)
        #st.write((cliente_m-cliente_p+imp_valor-(cliente_m*((traf/100) + (plat/100) + (imp /100))))*(comissao_g/100))
        st.write(f"Comissão Faixa 2 R$: {faixa2}")
        #st.write((traf/100) + (plat/100) + (imp /100))
@@ -89,7 +89,7 @@ if st.button("Enviar"):
  #------------------------------------------------------------ 
  # faixa 3   
     if fat_lancamento > cliente_m  : 
-        faixa3 = round(((fat_lancamento-cliente_m)-(despesas - (cliente_m*((traf/100) + (plat/100) + (imp /100)))))*(comissao_g/100),2)   
+        faixa3 = ((fat_lancamento-cliente_m)-(despesas - (cliente_m*((traf/100) + (plat/100) + (imp /100)))))*(comissao_g/100)   
         st.write(f'Comissão Faixa 3 R$: {faixa3}')              
     
     umenosaliquota = 1-(aliquota_imposto/100)
