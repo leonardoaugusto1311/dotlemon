@@ -57,8 +57,8 @@ if st.button("Enviar"):
 
 
     st.success("Dados enviados com sucesso!")
-    st.write(f'traf_posego R$: {traf_pos_valor} ')
-    st.write(f'plat_posaforma R$: {plat_pos_valor} ')
+    st.write(f'Tráfego R$: {traf_pos_valor} ')
+    st.write(f'Plataforma R$: {plat_pos_valor} ')
     st.write(f'Imposto R$: {imp_valor} ')
     st.write(f'Despesas: {despesas_Pos} ')
 
