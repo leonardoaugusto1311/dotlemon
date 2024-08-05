@@ -53,7 +53,6 @@ if st.button("Enviar"):
     contribuicao_cliente = st.session_state['contribuicao_cliente']
     aliquota_imposto = st.session_state['aliquota_imposto']
 
-    soma_percentuais = percentuais_politicas
 
 
     st.success("Dados enviados com sucesso!")
