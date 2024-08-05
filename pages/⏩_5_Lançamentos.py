@@ -83,18 +83,18 @@ if st.button("Enviar"):
         faixa3 = 0
                  
     elif fat_lancamento <= cliente_m : 
-       st.write(fat_lancamento)
-       #st.write(cliente_p)
-       #st.write(fat_lancamento-cliente_p)
-       #st.write(depesas_clientem-depesas_clientep)
+       parte1 = fat_lancamento - cliente_p
+       subtracao_despesas = despesas-depesas_clientep
+       faixa3 = (parte1-subtracao_despesas)*(cliente_m/100)
+       st.write(f'Comissão Faixa 2 : R${faixa3}')
     else : 
        
        #st.write(percentuais_politicas)
        faixa3 = 0
        subtracao_faixas = cliente_m-cliente_p
        subtracao_despesas = depesas_clientem-depesas_clientep
-       percentualg = (subtracao_faixas-subtracao_despesas)*(comissao_m/100)
-       st.write(percentualg)
+       faixa3 = (subtracao_faixas-subtracao_despesas)*(comissao_m/100)
+       st.write(f'Comissão Faixa 2 : R${faixa3}')
  #------------------------------------------------------------ 
 
 
