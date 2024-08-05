@@ -91,10 +91,10 @@ if st.button("Enviar"):
        
        #st.write(percentuais_politicas)
        faixa3 = 0
-       st.write(cliente_m)
-       st.write(cliente_p)
-       st.write(cliente_m-cliente_p)
-       st.write(depesas_clientem-depesas_clientep)
+       subtracao_faixas = cliente_m-cliente_p
+       subtracao_despesas = depesas_clientem-depesas_clientep
+       percentualg = subtracao_faixas-subtracao_despesas
+       st.write(depesas_clientem-depesas_clientep)*(comissao_m/100)
  #------------------------------------------------------------ 
 
 
