@@ -73,7 +73,6 @@ if st.button("Enviar"):
         st.write(f'Comissão Faixa 1 R$: {faixa1}')
 #---------------------------------------------------------------------------------------
     if fat_lancamento <= cliente_p:
-        st.write(f"Comissão Faixa 2 R$: {0}")
         faixa2 = 0 
         faixa3 = 0
                  
