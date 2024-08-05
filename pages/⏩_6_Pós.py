@@ -50,7 +50,6 @@ if st.button("Enviar"):
     comissao_p2 = st.session_state['comissao_p2']
     cliente_p2 = st.session_state['cliente_p2']
     comissao_g2 = st.session_state['comissao_g2']
-    cliente_g2 = st.session_state['cliente_g2']
     contribuicao_cliente = st.session_state['contribuicao_cliente']
     aliquota_imposto = st.session_state['aliquota_imposto']
     cliente_m2 = st.session_state['cliente_m2']
