@@ -46,7 +46,7 @@ if st.button("Enviar"):
     # Verificação se os valores necessários foram inseridos
     if faturamento > 0 and clientes_medios > 0 and folha_pagamento > 0 and despesas_operacionais > 0 and despesas_administrativas > 0 and impostos_pagos > 0:
         # Cálculo das variáveis
-        st.session_state['aliquota_imposto'] = round(impostos_pagos / faturamento, 2) * 100
+        st.session_state['aliquota_imposto'] = (impostos_pagos / faturamento) * 100
         aliquota_imposto = st.session_state['aliquota_imposto']
         st.session_state['custo_mensal_coberto'] = round((folha_pagamento + despesas_operacionais + despesas_administrativas) / 12, 2)
         custo_mensal_coberto = st.session_state['custo_mensal_coberto']
