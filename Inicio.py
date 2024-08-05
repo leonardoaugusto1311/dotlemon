@@ -1,6 +1,6 @@
 import streamlit as st
 import base64
-st.image(r"C:\Users\user\Desktop\Projetos\Dot_lemon\dotlemon logo.png", width=200)
+#st.image(r"C:\Users\user\Desktop\Projetos\Dot_lemon\dotlemon logo.png", width=200)
 
 # Funções para as páginas
 def home_page():
