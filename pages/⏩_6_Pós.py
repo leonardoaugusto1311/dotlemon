@@ -62,38 +62,59 @@ if st.button("Enviar"):
     st.write(f'Imposto R$: {imp_valor} ')
     st.write(f'Despesas R$: {despesas_Pos} ')
 
+    percentuais_politicas = (traf_pos/100) + (plat_pos/100) + (imp_pos/100)
+
     if fat_lancamento_pos <= cliente_p2:
         faixa1 = (fat_lancamento_pos - despesas_Pos) * (comissao_p2/100)
-        
+        faixa2 = 0 
+        faixa3 = 0
         st.write(f'Comissão Faixa 1 R$: {faixa1}')
     else:
-        faixa1 = (cliente_p2 - (cliente_p2 * ((traf_pos/100) + (plat_pos/100) + (imp_pos/100))))*(comissao_p2/100)
+        faixa1 = (cliente_p2 - (cliente_p2 * (percentuais_politicas)))*(comissao_p2/100)
         st.write(f'Comissão Faixa 1 R$: {faixa1}')
+
+
 #---------------------------------------------------------------------------------------
-    if fat_lancamento_pos <= cliente_p2:
-        faixa2 = 0
-        st.write(f"Comissão Faixa 2 R$: {0}")
-                 
-    elif fat_lancamento_pos <= comissao_m2 : 
-       faixa2 = (((fat_lancamento_pos-cliente_p2) - (despesas_Pos - (cliente_p2*((traf_pos/100) + (plat_pos/100) + (imp_pos /100)))))*(comissao_m2/100) )  
-       st.write(f' Comissão Faixa 2 R$: {faixa2}')
+    depesas_clientep = cliente_p2*((traf_pos/100) + (plat_pos/100) + (imp_pos/100))
+    depesas_clientem = cliente_m2*((traf_pos/100) + (plat_pos/100) + (imp_pos/100))
+
     
+    if fat_lancamento_pos <= cliente_p2:
+        faixa2 = 0 
+        faixa3 = 0
+                 
+    elif fat_lancamento_pos <= cliente_m2 : 
+       parte1 = fat_lancamento_pos - cliente_p2
+       subtracao_despesas = despesas_Pos-depesas_clientep
+       faixa2 = (parte1-subtracao_despesas)*(comissao_m2/100)
+       st.write(f'Comissão Faixa 2 : R${faixa2}')
     else : 
-       faixa2 = (cliente_m2-cliente_p2+imp_valor-(cliente_m2*((traf_pos/100) + (plat_pos/100) + (imp_pos /100))))*(comissao_g2/100)
-       #st.write((cliente_m-cliente_p+imp_valor-(cliente_m*((traf/100) + (plat/100) + (imp /100))))*(comissao_g/100))
-       st.write(f"Comissão Faixa 2 R$: {faixa2}")
-       #st.write((traf/100) + (plat/100) + (imp /100))
+       
+       #st.write(percentuais_politicas)
+       faixa3 = 0
+       subtracao_faixas = cliente_m2-cliente_p2
+       subtracao_despesas = depesas_clientem-depesas_clientep
+       faixa2 = (subtracao_faixas-subtracao_despesas)*(comissao_m2/100)
+       st.write(f'Comissão Faixa 2 : R${faixa2}')
  #------------------------------------------------------------ 
+
+
  # faixa 3   
     if fat_lancamento_pos > cliente_m2  : 
-        faixa3 = ((fat_lancamento_pos-cliente_m2)-(despesas_Pos - (cliente_m2*((traf_pos/100) + (plat_pos/100) + (imp_pos /100)))))*(comissao_g2/100)   
-        st.write(f'Comissão Faixa 3 R$: {faixa3}')   
-    else : 
-        faixa3 = 0           
-        st.write(f'Comissão Faixa 3 R$: {faixa3}')   
-    comissao_recebida_pos = faixa1+faixa2+faixa3
-    st.write(f'Recebido a título de comissão R$: {comissao_recebida_pos}')
-    tx_fix_mensal_pos  = round(contribuicao_cliente/(1-(aliquota_imposto/100)),2)
-    st.write(f'Taxa Fixa Mensal: {tx_fix_mensal_pos}')
-    total_recebido_pos = round(tx_fix_mensal_pos*projeto_meses_pos+comissao_recebida_pos,2)
-    st.write(f'Total Recebido no Projeto: {total_recebido_pos}')
+        parte1 = fat_lancamento_pos - cliente_m2
+        subtracao_despesas = despesas_Pos-depesas_clientem
+        faixa3 = (parte1-subtracao_despesas)*(comissao_g2/100)
+        st.write(f'Comissão Faixa 3 : R${faixa3}')
+
+
+
+
+
+    umenosaliquota = 1-(aliquota_imposto/100)
+    comissao_recebida = faixa1+faixa2+faixa3
+    st.write(f'Recebido a título de comissão R$: {comissao_recebida}')
+
+    tx_fix_mensal  = round(contribuicao_cliente/umenosaliquota,2)
+    st.write(f'Taxa Fixa Mensal: {tx_fix_mensal}')
+    total_recebido = tx_fix_mensal*projeto_meses_pos+comissao_recebida
+    st.write(f'Total Recebido no Projeto: {total_recebido}')
