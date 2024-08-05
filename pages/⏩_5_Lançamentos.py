@@ -93,8 +93,8 @@ if st.button("Enviar"):
        faixa3 = 0
        subtracao_faixas = cliente_m-cliente_p
        subtracao_despesas = depesas_clientem-depesas_clientep
-       percentualg = subtracao_faixas-subtracao_despesas
-       st.write(depesas_clientem-depesas_clientep)*(comissao_m/100)
+       percentualg = (subtracao_faixas-subtracao_despesas)*(comissao_m/100)
+       st.write(percentualg)
  #------------------------------------------------------------ 
 
 
