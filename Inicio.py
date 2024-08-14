@@ -25,4 +25,4 @@ if st.button("Entrar"):
     if verificar_credenciais(login, senha):
         st.success("Login bem-sucedido!")
     else:
-        st.error("Login ou senha incorretos.")
+        st.error("Login ou senha incorretos.00")
