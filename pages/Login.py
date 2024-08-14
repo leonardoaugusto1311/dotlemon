@@ -2,9 +2,9 @@ import streamlit as st
 from pymongo import MongoClient
 
 # Configurar a conexão com o MongoDB
-client = MongoClient('mongodb://localhost:27017/')
-db = client.sua_base_de_dados
-colecao = db.sua_colecao
+client = MongoClient('mongodb+srv://leonardoaugusto199813:August@123@precificacao.axzys.mongodb.net/?retryWrites=true&w=majority&appName=Precificacao')
+db = client.precificacao
+colecao = db.login
 
 # Função para verificar credenciais
 def verificar_credenciais(login, senha):
