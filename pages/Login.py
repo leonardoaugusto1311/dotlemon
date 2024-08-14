@@ -14,6 +14,7 @@ def load_data_from_onedrive():
 
 # Função para verificar as credenciais
 def validate_credentials(username, password, df):
+    # Verifica se o nome de usuário e senha fornecidos estão na planilha
     user_row = df[(df['Username'] == username) & (df['Password'] == password)]
     return not user_row.empty
 
