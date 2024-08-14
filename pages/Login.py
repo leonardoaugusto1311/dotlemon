@@ -17,7 +17,7 @@ def load_data_from_onedrive():
     st.write("Detectando tipo de arquivo...")
     
     try:
-        df = pd.read_excel(excel_data)
+        df = pd.read_excel(excel_data, engine='openpyxl')
         st.write("Arquivo carregado com sucesso.")
     except Exception as e:
         st.error(f"Erro ao carregar o arquivo: {e}")
