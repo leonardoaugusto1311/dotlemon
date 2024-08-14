@@ -9,7 +9,7 @@ def load_data_from_onedrive():
     response = requests.get(onedrive_link)
     response.raise_for_status()  # Verifica se o download foi bem-sucedido
     excel_data = BytesIO(response.content)
-    df = pd.read_excel(excel_data)
+    df = pd.read_excel(excel_data, engine='openpyxl')  # Certifique-se de especificar o motor correto
     return df
 
 # Função para verificar as credenciais
