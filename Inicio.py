@@ -16,8 +16,10 @@ def verificar_credenciais(login, senha):
     usuario = colecao.find_one({"login": login})
     if usuario:
         senha_armazenada = usuario.get("senha")
-        return senha_armazenada == senha
-    return False
+        tipo_usuario = usuario.get("tipo")
+        return senha_armazenada == senha , tipo_usuario
+
+    return False , None
 
 # Página Login
 def pagina_login():
@@ -28,12 +30,15 @@ def pagina_login():
     senha = st.text_input("Senha", type='password')
 
     if st.button("Entrar"):
-        if verificar_credenciais(login, senha):
+        login_valido, tipo_usuario = verificar_credenciais(login, senha)
+        if login_valido:
             st.session_state['login'] = True
+            st.session_state['tipo_usuario'] = tipo_usuario  # Armazenar o tipo de usuário na sessão
             st.success("Login bem-sucedido!")
-            st.rerun()  # Recarregar para refletir o estado de login
+            st.experimental_rerun()  # Recarregar para refletir o estado de login
         else:
             st.error("Login ou senha incorretos.")
+
 
 # Função para exibir a segunda página (Dados)
 def pagina_dados():
@@ -92,6 +97,7 @@ def pagina_dados():
             st.write(f"Despesa/Receita: {despesa_receita:.0f}%")
         else:
             st.warning("Insira todos os campos.")
+
 
 # Exemplo de uma outra página fictícia
 def pagina_lancamentos():
@@ -472,33 +478,42 @@ def pagina_pos_politicas():
         total_recebido = tx_fix_mensal*projeto_meses_pos+comissao_recebida
         st.write(f'Total Recebido no Projeto: R${round(total_recebido,2)}')
 
-
 # Função principal para gerenciar a navegação
 def main():
     if 'login' not in st.session_state:
         st.session_state['login'] = False
+        st.session_state['tipo_usuario'] = None  # Inicializar tipo_usuario na sessão
 
     if st.session_state['login']:
-        # Menu de navegação após login bem-sucedido
-        pagina_selecionada = st.sidebar.selectbox("Selecione a Página", ["Dados", "Políticas Lançamentos","Políticas Pós","Avulsos","Lançamentos","Pós"])
-        
-        if pagina_selecionada == "Dados":
-            pagina_dados()
-        elif pagina_selecionada == "Políticas Lançamentos":
-            pagina_lancamentos()
-        elif pagina_selecionada == "Políticas Pós":
-            pagina_policas_pos()
-        elif pagina_selecionada == "Avulsos":
-            pagina_avulsos()
-        elif pagina_selecionada == "Lançamentos":
-            pagina_lancamentos_politicas()
-        elif pagina_selecionada == "Pós":
-            pagina_policas_pos()
+        # Verifica o tipo de usuário antes de exibir o menu
+        if st.session_state['tipo_usuario'] == 1:
+            # Menu de navegação após login bem-sucedido
+            pagina_selecionada = st.sidebar.selectbox("Selecione a Página", ["Dados", "Políticas Lançamentos","Políticas Pós","Avulsos","Lançamentos","Pós"])
+            
+            if pagina_selecionada == "Dados":
+                pagina_dados()
+            elif pagina_selecionada == "Políticas Lançamentos":
+                pagina_lancamentos()
+            elif pagina_selecionada == "Políticas Pós":
+                pagina_policas_pos()
+            elif pagina_selecionada == "Avulsos":
+                pagina_avulsos()
+            elif pagina_selecionada == "Lançamentos":
+                pagina_lancamentos_politicas()
+            elif pagina_selecionada == "Pós":
+                pagina_policas_pos()
+        else:
+            if pagina_selecionada == "Avulsos":
+                pagina_avulsos()
+            elif pagina_selecionada == "Lançamentos":
+                pagina_lancamentos_politicas()
+            elif pagina_selecionada == "Pós":
+                pagina_policas_pos()
     else:
         pagina_login()
 
 if __name__ == "__main__":
     main()
 
-
 #dotlemon\Scripts\activate
+
