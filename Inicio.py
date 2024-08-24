@@ -479,7 +479,7 @@ def pagina_pos_politicas():
         st.write(f'Total Recebido no Projeto: R${round(total_recebido,2)}')
 
 # Função principal para gerenciar a navegação
-def main():
+
     if 'login' not in st.session_state:
         st.session_state['login'] = False
         st.session_state['tipo_usuario'] = None  # Inicializar tipo_usuario na sessão
@@ -511,6 +511,41 @@ def main():
                 pagina_policas_pos()
     else:
         pagina_login()
+
+def main():
+    if 'login' not in st.session_state:
+        st.session_state['login'] = False
+        st.session_state['tipo_usuario'] = None  # Inicializar tipo_usuario na sessão
+
+    if st.session_state['login']:
+        # Menu de navegação após login bem-sucedido
+        if st.session_state['tipo_usuario'] == 1:
+            # Menu completo para tipo_usuario == 1
+            opcoes = ["Dados", "Políticas Lançamentos", "Políticas Pós", "Avulsos", "Lançamentos", "Pós"]
+        else:
+            # Menu limitado para outros tipos de usuários
+            opcoes = ["Avulsos", "Lançamentos", "Pós"]
+        
+        pagina_selecionada = st.sidebar.selectbox("Selecione a Página", opcoes)
+        
+        if pagina_selecionada == "Dados":
+            pagina_dados()
+        elif pagina_selecionada == "Políticas Lançamentos":
+            pagina_lancamentos()
+        elif pagina_selecionada == "Políticas Pós":
+            pagina_policas_pos()
+        elif pagina_selecionada == "Avulsos":
+            pagina_avulsos()
+        elif pagina_selecionada == "Lançamentos":
+            pagina_lancamentos_politicas()
+        elif pagina_selecionada == "Pós":
+            pagina_policas_pos()
+    else:
+        pagina_login()
+
+if __name__ == "__main__":
+    main()
+
 
 if __name__ == "__main__":
     main()
