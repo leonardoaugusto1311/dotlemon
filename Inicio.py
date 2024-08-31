@@ -119,7 +119,7 @@ def pagina_lancamentos():
         st.session_state['comissao_g'] = 0.0
 
     # Carrega os dados do MongoDB se disponíveis
-    user_data = colecao_lancamentos.find_one({'cliente_id': ObjectId(cliente_id)})
+    user_data = colecao_lancamentos.find_one({'cliente_id': cliente_id})
     if user_data:
         st.session_state['cliente_p'] = user_data.get('cliente_p', 0.0)
         st.session_state['cliente_m'] = user_data.get('cliente_m', 0.0)
@@ -141,22 +141,24 @@ def pagina_lancamentos():
         comissao_m = st.session_state['comissao_m']
         comissao_g = st.session_state['comissao_g']
 
-        # Atualiza ou insere os dados no MongoDB
+        # Define o dicionário de dados a ser atualizado ou inserido
+        dados_lancamentos = {
+            "cliente_id": cliente_id,  # Use o cliente_id diretamente se não for um ObjectId
+            "cliente_p": cliente_p,
+            "cliente_m": cliente_m,
+            "comissao_p": comissao_p,
+            "comissao_m": comissao_m,
+            "comissao_g": comissao_g
+        }
+
+        # Atualiza ou insere os dados na coleção
         colecao_lancamentos.update_one(
-            {'cliente_id': ObjectId(cliente_id)},
-            {'$set': {
-                'cliente_p': cliente_p,
-                'cliente_m': cliente_m,
-                'comissao_p': comissao_p,
-                'comissao_m': comissao_m,
-                'comissao_g': comissao_g
-            }},
+            {"cliente_id": cliente_id},  # Use o cliente_id diretamente na consulta
+            {'$set': dados_lancamentos},
             upsert=True
         )
 
         st.success("Dados enviados com sucesso!")
-
-# Função para exibir a página de Políticas Pós
 
 
 
