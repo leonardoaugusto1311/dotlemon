@@ -22,8 +22,8 @@ def verificar_credenciais(login, senha):
     if usuario:
         senha_armazenada = usuario.get("senha")
         tipo_usuario = usuario.get("tipo")
-        user_id = usuario.get("_id")  # Obter o ID do usuário
-        return senha_armazenada == senha, tipo_usuario, user_id
+        cliente_id = usuario.get("cliente_id")  # Obter o ID do usuário
+        return senha_armazenada == senha, tipo_usuario, cliente_id
     return False, None, None
 
 # Página Login
@@ -35,12 +35,12 @@ def pagina_login():
     senha = st.text_input("Senha", type='password', key="password_input_unico")
 
     if st.button("Entrar", key="entrar_button"):
-        login_valido, tipo_usuario, user_id = verificar_credenciais(login, senha)
+        login_valido, tipo_usuario, cliente_id = verificar_credenciais(login, senha)
         if login_valido:
             st.session_state['login'] = True
             st.session_state['tipo_usuario'] = tipo_usuario  # Armazenar o tipo de usuário na sessão
-            st.session_state['user_id'] = user_id  # Armazenar o ID do usuário na sessão
-            st.session_state['dados_existentes'] = colecao_dados.find_one({"user_id": user_id}) or {}
+            st.session_state['cliente_id'] = cliente_id  # Armazenar o ID do usuário na sessão
+            st.session_state['dados_existentes'] = colecao_dados.find_one({"cliente_id": cliente_id}) or {}
             st.success("Login bem-sucedido!")
             st.rerun()  # Recarregar para refletir o estado de login
         else:
@@ -72,7 +72,7 @@ def pagina_dados():
     if st.button("Enviar", key="dados_enviar_button"):
         # Recuperar valores do session_state
         dados_novos = {
-            "user_id": st.session_state['user_id'],
+            "cliente_id": st.session_state['cliente_id'],
             "faturamento": faturamento,
             "clientes_medios": clientes_medios,
             "folha_pagamento": folha_pagamento,
@@ -85,7 +85,7 @@ def pagina_dados():
             "despesa_receita": round(((folha_pagamento + despesas_operacionais + despesas_administrativas) / (faturamento / 12) if faturamento > 0 else 1) * 100, 2)
         }
         # Atualizar ou inserir os dados na coleção
-        colecao_dados.update_one({"user_id": st.session_state['user_id']}, {'$set': dados_novos}, upsert=True)
+        colecao_dados.update_one({"cliente_id": st.session_state['cliente_id']}, {'$set': dados_novos}, upsert=True)
 
         # Exibição das variáveis calculadas
         st.success("Valores enviados e gravados com sucesso!")
@@ -101,8 +101,8 @@ def pagina_lancamentos():
     st.info('🟡 Preencha os campos com as informações solicitadas 🟡')
 
     # Recupera o ID do usuário da sessão
-    user_id = st.session_state.get('user_id')
-    if not user_id:
+    cliente_id = st.session_state.get('cliente_id')
+    if not cliente_id:
         st.error("Usuário não autenticado.")
         return
 
@@ -119,7 +119,7 @@ def pagina_lancamentos():
         st.session_state['comissao_g'] = 0.0
 
     # Carrega os dados do MongoDB se disponíveis
-    user_data = colecao_lancamentos.find_one({'user_id': ObjectId(user_id)})
+    user_data = colecao_lancamentos.find_one({'cliente_id': ObjectId(cliente_id)})
     if user_data:
         st.session_state['cliente_p'] = user_data.get('cliente_p', 0.0)
         st.session_state['cliente_m'] = user_data.get('cliente_m', 0.0)
@@ -143,7 +143,7 @@ def pagina_lancamentos():
 
         # Atualiza ou insere os dados no MongoDB
         colecao_lancamentos.update_one(
-            {'user_id': ObjectId(user_id)},
+            {'cliente_id': ObjectId(cliente_id)},
             {'$set': {
                 'cliente_p': cliente_p,
                 'cliente_m': cliente_m,
@@ -165,8 +165,8 @@ def pagina_policas_pos():
     st.info('🟡 Preencha os campos com as informações solicitadas 🟡')
 
     # Recupera o ID do usuário da sessão
-    user_id = st.session_state.get('user_id')
-    if not user_id:
+    cliente_id = st.session_state.get('cliente_id')
+    if not cliente_id:
         st.error("Usuário não autenticado.")
         return
 
@@ -183,7 +183,7 @@ def pagina_policas_pos():
         st.session_state['comissao_g2'] = 0.0
 
     # Carrega os dados do MongoDB se disponíveis
-    user_data = colecao_pos.find_one({'user_id': ObjectId(user_id)})
+    user_data = colecao_pos.find_one({'cliente_id': ObjectId(cliente_id)})
     if user_data:
         st.session_state['cliente_p2'] = user_data.get('cliente_p2', 0.0)
         st.session_state['cliente_m2'] = user_data.get('cliente_m2', 0.0)
@@ -207,7 +207,7 @@ def pagina_policas_pos():
 
         # Atualiza ou insere os dados no MongoDB
         colecao_pos.update_one(
-            {'user_id': ObjectId(user_id)},
+            {'cliente_id': ObjectId(cliente_id)},
             {'$set': {
                 'cliente_p2': cliente_p2,
                 'cliente_m2': cliente_m2,
