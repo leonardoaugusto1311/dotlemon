@@ -15,6 +15,7 @@ db = client.precificacao
 colecao_login = db['login']
 colecao_dados = db['answers_dados']
 colecao_lancamentos = db['answers_lancamento']
+colecao_pos = db['answers_pos']
 
 def verificar_credenciais(login, senha):
     usuario = colecao_login.find_one({"login": login})
@@ -156,11 +157,20 @@ def pagina_lancamentos():
         st.success("Dados enviados com sucesso!")
 
 # Função para exibir a página de Políticas Pós
+
+
+
 def pagina_policas_pos():
     st.title('POLÍTICAS PÓS')
     st.info('🟡 Preencha os campos com as informações solicitadas 🟡')
 
-    # Inicializa os valores na sessão
+    # Recupera o ID do usuário da sessão
+    user_id = st.session_state.get('user_id')
+    if not user_id:
+        st.error("Usuário não autenticado.")
+        return
+
+    # Inicializa os valores na sessão se não existirem
     if 'cliente_p2' not in st.session_state:
         st.session_state['cliente_p2'] = 0.0
     if 'cliente_m2' not in st.session_state:
@@ -172,6 +182,16 @@ def pagina_policas_pos():
     if 'comissao_g2' not in st.session_state:
         st.session_state['comissao_g2'] = 0.0
 
+    # Carrega os dados do MongoDB se disponíveis
+    user_data = colecao_pos.find_one({'user_id': ObjectId(user_id)})
+    if user_data:
+        st.session_state['cliente_p2'] = user_data.get('cliente_p2', 0.0)
+        st.session_state['cliente_m2'] = user_data.get('cliente_m2', 0.0)
+        st.session_state['comissao_p2'] = user_data.get('comissao_p2', 0.0)
+        st.session_state['comissao_m2'] = user_data.get('comissao_m2', 0.0)
+        st.session_state['comissao_g2'] = user_data.get('comissao_g2', 0.0)
+
+    # Cria inputs para os dados
     st.session_state['cliente_p2'] = st.number_input("Cliente P (Faturamento Máximo)", min_value=0.0, step=0.01, format="%.2f", value=float(st.session_state['cliente_p2']), key="cliente_p2_input")
     st.session_state['cliente_m2'] = st.number_input("Cliente M (Faturamento Máximo)", min_value=0.0, step=0.01, format="%.2f", value=float(st.session_state['cliente_m2']), key="cliente_m2_input")
     st.session_state['comissao_p2'] = st.number_input("Cliente P (% Comissão)", min_value=0.0, step=0.01, format="%.2f", value=float(st.session_state['comissao_p2']), key="comissao_p2_input")
@@ -185,8 +205,21 @@ def pagina_policas_pos():
         comissao_m2 = st.session_state['comissao_m2']
         comissao_g2 = st.session_state['comissao_g2']
 
-        # Adicione a lógica para processar os valores recebidos
+        # Atualiza ou insere os dados no MongoDB
+        colecao_pos.update_one(
+            {'user_id': ObjectId(user_id)},
+            {'$set': {
+                'cliente_p2': cliente_p2,
+                'cliente_m2': cliente_m2,
+                'comissao_p2': comissao_p2,
+                'comissao_m2': comissao_m2,
+                'comissao_g2': comissao_g2
+            }},
+            upsert=True
+        )
+
         st.success("Dados enviados com sucesso!")
+
 
 # Função para exibir a página de Avulsos
 def pagina_avulsos():
