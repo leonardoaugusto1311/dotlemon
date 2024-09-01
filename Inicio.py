@@ -161,7 +161,7 @@ def pagina_lancamentos():
         st.success("Dados enviados com sucesso!")
 
 
-
+# Função para exibir a página de Lançamentos pos
 def pagina_policas_pos():
     st.title('POLÍTICAS PÓS')
     st.info('🟡 Preencha os campos com as informações solicitadas 🟡')
@@ -185,7 +185,7 @@ def pagina_policas_pos():
         st.session_state['comissao_g2'] = 0.0
 
     # Carrega os dados do MongoDB se disponíveis
-    user_data = colecao_pos.find_one({'cliente_id': ObjectId(cliente_id)})
+    user_data = colecao_pos.find_one({'cliente_id': cliente_id})
     if user_data:
         st.session_state['cliente_p2'] = user_data.get('cliente_p2', 0.0)
         st.session_state['cliente_m2'] = user_data.get('cliente_m2', 0.0)
@@ -207,16 +207,20 @@ def pagina_policas_pos():
         comissao_m2 = st.session_state['comissao_m2']
         comissao_g2 = st.session_state['comissao_g2']
 
-        # Atualiza ou insere os dados no MongoDB
+        # Define o dicionário de dados a ser atualizado ou inserido
+        dados_pos = {
+            "cliente_id": cliente_id,  # Use o cliente_id diretamente
+            "cliente_p2": cliente_p2,
+            "cliente_m2": cliente_m2,
+            "comissao_p2": comissao_p2,
+            "comissao_m2": comissao_m2,
+            "comissao_g2": comissao_g2
+        }
+
+        # Atualiza ou insere os dados na coleção
         colecao_pos.update_one(
-            {'cliente_id': ObjectId(cliente_id)},
-            {'$set': {
-                'cliente_p2': cliente_p2,
-                'cliente_m2': cliente_m2,
-                'comissao_p2': comissao_p2,
-                'comissao_m2': comissao_m2,
-                'comissao_g2': comissao_g2
-            }},
+            {'cliente_id': cliente_id},  # Use o cliente_id diretamente na consulta
+            {'$set': dados_pos},
             upsert=True
         )
 
