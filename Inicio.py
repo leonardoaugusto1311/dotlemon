@@ -226,8 +226,6 @@ def pagina_policas_pos():
 
         st.success("Dados enviados com sucesso!")
 
-from bson import ObjectId
-from bson.errors import InvalidId
 
 def pagina_avulsos():
     st.title('AVULSOS')
@@ -237,13 +235,6 @@ def pagina_avulsos():
     cliente_id = st.session_state.get('cliente_id')
     if not cliente_id:
         st.error("Usuário não autenticado.")
-        return
-
-    # Verifica se o cliente_id é um ObjectId válido
-    try:
-        cliente_object_id = ObjectId(cliente_id)
-    except InvalidId:
-        st.error("ID do cliente inválido.")
         return
 
     # Inicializa os valores na sessão
@@ -275,7 +266,7 @@ def pagina_avulsos():
 
     # Busca a alíquota de imposto da coleção 'answer_dados' com base no cliente_id
     aliquota_imposto = default_value
-    dados_fiscais = colecao_dados.find_one({'cliente_id': cliente_object_id})
+    dados_fiscais = colecao_dados.find_one({'cliente_id': cliente_id})
     if dados_fiscais:
         aliquota_imposto = dados_fiscais.get('aliquota_imposto', default_value)
     
