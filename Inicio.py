@@ -226,11 +226,25 @@ def pagina_policas_pos():
 
         st.success("Dados enviados com sucesso!")
 
+from bson import ObjectId
+from bson.errors import InvalidId
 
-# Função para exibir a página de Avulsos
 def pagina_avulsos():
     st.title('AVULSOS')
     st.info('🟡 Preencha os campos com as informações solicitadas 🟡')
+
+    # Recupera o ID do usuário da sessão
+    cliente_id = st.session_state.get('cliente_id')
+    if not cliente_id:
+        st.error("Usuário não autenticado.")
+        return
+
+    # Verifica se o cliente_id é um ObjectId válido
+    try:
+        cliente_object_id = ObjectId(cliente_id)
+    except InvalidId:
+        st.error("ID do cliente inválido.")
+        return
 
     # Inicializa os valores na sessão
     default_value = 0.0
@@ -258,6 +272,15 @@ def pagina_avulsos():
         st.session_state['folha_pagamento12'] = default_value
     if 'folha_pagamento13' not in st.session_state:
         st.session_state['folha_pagamento13'] = default_value
+
+    # Busca a alíquota de imposto da coleção 'answer_dados' com base no cliente_id
+    aliquota_imposto = default_value
+    dados_fiscais = colecao_dados.find_one({'cliente_id': cliente_object_id})
+    if dados_fiscais:
+        aliquota_imposto = dados_fiscais.get('aliquota_imposto', default_value)
+    
+    # Salva a alíquota na sessão
+    st.session_state['aliquota_imposto'] = aliquota_imposto
 
     # Campos de entrada para os dados financeiros
     st.session_state['folha_pagamento2'] = st.number_input("% Reinvestimento", min_value=0.0, step=0.01, format="%.2f", value=st.session_state['folha_pagamento2'], key="folha_pagamento2_input")
@@ -294,12 +317,13 @@ def pagina_avulsos():
         fator_preco = 1 / (1 - ((folha_pagamento2 / 100) + (folha_pagamento3 / 100) + (aliquota_imposto / 100)))
         p_final = custo_total * fator_preco
 
-        st.success("Enviados com sucesso!")
+        st.success("Enviado com sucesso!")
         st.write("### Valores Calculados")
         st.write(f"Total de Horas: {total_horass:.0f}")
         st.write(f"Custo Total: {custo_total:.2f}")
         st.write(f"Fator preço: {fator_preco:.2f}")
         st.write(f"Preço Final: {p_final:.0f}")
+
 
 # Função para exibir a página de Lançamentos Políticas
 def pagina_lancamentos_politicas():
