@@ -325,6 +325,12 @@ def pagina_lancamentos_politicas():
     st.title('LANÇAMENTOS')
     st.info('🟡 Preencha os campos com as informações solicitadas 🟡')
 
+    # Recupera o ID do usuário da sessão
+    cliente_id = st.session_state.get('cliente_id')
+    if not cliente_id:
+        st.error("Usuário não autenticado.")
+        return
+
     # Inicializa os valores na sessão
     if 'projeto_meses' not in st.session_state:
         st.session_state['projeto_meses'] = 0.0
@@ -344,6 +350,15 @@ def pagina_lancamentos_politicas():
     st.session_state['plat'] = st.number_input("Plataforma %", min_value=0.0, step=0.01, format="%.2f", value=float(st.session_state['plat']), key="plat_input")
     st.session_state['imp'] = st.number_input("Imposto %", min_value=0.0, step=0.01, format="%.2f", value=float(st.session_state['imp']), key="imp_input")
 
+    # Busca o valor de contribuicao_cliente na coleção 'answers_dados' com base no cliente_id
+    contribuicao_cliente = 0.0
+    dados_fiscais = colecao_dados.find_one({'cliente_id': cliente_id})
+    if dados_fiscais:
+        contribuicao_cliente = dados_fiscais.get('contribuicao_cliente', 0.0)
+
+    # Salva a contribuicao_cliente na sessão
+    st.session_state['contribuicao_cliente'] = contribuicao_cliente
+
     if st.button("Enviar", key="lancamentos_politicas_enviar_button"):
         projeto_meses = st.session_state['projeto_meses']
         fat_lancamento = st.session_state['fat_lancamento']
@@ -351,11 +366,11 @@ def pagina_lancamentos_politicas():
         plat = st.session_state['plat']
         imp = st.session_state['imp']
 
-        st.session_state['traf_valor'] = round(fat_lancamento * (traf/100), 3)
+        st.session_state['traf_valor'] = round(fat_lancamento * (traf / 100), 3)
         traf_valor = st.session_state['traf_valor']
-        st.session_state['plat_valor'] = round(fat_lancamento * (plat/100), 3)
+        st.session_state['plat_valor'] = round(fat_lancamento * (plat / 100), 3)
         plat_valor = st.session_state['plat_valor']
-        st.session_state['imp_valor'] = round(fat_lancamento * (imp/100), 3)
+        st.session_state['imp_valor'] = round(fat_lancamento * (imp / 100), 3)
         imp_valor = st.session_state['imp_valor']
         st.session_state['depesas'] = traf_valor + plat_valor + imp_valor
         despesas = st.session_state['depesas']
@@ -372,53 +387,54 @@ def pagina_lancamentos_politicas():
         st.write(f'Trafego R$: {traf_valor} ')
         st.write(f'Plataforma R$: {plat_valor} ')
         st.write(f'Imposto R$: {imp_valor} ')
-        st.write(f'Depesas R$: {despesas} ')
+        st.write(f'Despesas R$: {despesas} ')
 
-        percentuais_politicas = (traf/100) + (plat/100) + (imp/100)
+        percentuais_politicas = (traf / 100) + (plat / 100) + (imp / 100)
 
         if fat_lancamento <= cliente_p:
-            faixa1 = (fat_lancamento - despesas) * (comissao_p/100)
-            faixa2 = 0 
+            faixa1 = (fat_lancamento - despesas) * (comissao_p / 100)
+            faixa2 = 0
             faixa3 = 0
             st.write(f'Comissão Faixa 1 R$: {faixa1}')
         else:
-            faixa1 = (cliente_p - (cliente_p * (percentuais_politicas)))*(comissao_p/100)
+            faixa1 = (cliente_p - (cliente_p * (percentuais_politicas))) * (comissao_p / 100)
             st.write(f'Comissão Faixa 1 R$: {faixa1}')
 
-        depesas_clientep = cliente_p*((traf/100) + (plat/100) + (imp/100))
-        depesas_clientem = cliente_m*((traf/100) + (plat/100) + (imp/100))
+        depesas_clientep = cliente_p * percentuais_politicas
+        depesas_clientem = cliente_m * percentuais_politicas
 
         if fat_lancamento <= cliente_p:
-            faixa2 = 0 
+            faixa2 = 0
             faixa3 = 0
-        elif fat_lancamento <= cliente_m : 
+        elif fat_lancamento <= cliente_m:
             parte1 = fat_lancamento - cliente_p
-            subtracao_despesas = despesas-depesas_clientep
-            faixa2 = (parte1-subtracao_despesas)*(comissao_m/100)
+            subtracao_despesas = despesas - depesas_clientep
+            faixa2 = (parte1 - subtracao_despesas) * (comissao_m / 100)
             st.write(f'Comissão Faixa 2 : R${faixa2}')
-        else : 
+        else:
             faixa3 = 0
-            subtracao_faixas = cliente_m-cliente_p
-            subtracao_despesas = depesas_clientem-depesas_clientep
-            faixa2 = (subtracao_faixas-subtracao_despesas)*(comissao_m/100)
+            subtracao_faixas = cliente_m - cliente_p
+            subtracao_despesas = depesas_clientem - depesas_clientep
+            faixa2 = (subtracao_faixas - subtracao_despesas) * (comissao_m / 100)
             st.write(f'Comissão Faixa 2 : R${faixa2}')
 
-        if fat_lancamento > cliente_m  : 
+        if fat_lancamento > cliente_m:
             parte1 = fat_lancamento - cliente_m
-            subtracao_despesas = despesas-depesas_clientem
-            faixa3 = (parte1-subtracao_despesas)*(comissao_g/100)
+            subtracao_despesas = despesas - depesas_clientem
+            faixa3 = (parte1 - subtracao_despesas) * (comissao_g / 100)
             st.write(f'Comissão Faixa 3 : R${faixa3}')
-        else : 
+        else:
             faixa3 = 0
 
-        umenosaliquota = 1-(aliquota_imposto/100)
-        comissao_recebida = faixa1+faixa2+faixa3
+        umenosaliquota = 1 - (aliquota_imposto / 100)
+        comissao_recebida = faixa1 + faixa2 + faixa3
         st.write(f'Recebido a título de comissão R$: {comissao_recebida}')
 
-        tx_fix_mensal  = round(contribuicao_cliente/umenosaliquota,2)
+        tx_fix_mensal = round(contribuicao_cliente / umenosaliquota, 2)
         st.write(f'Taxa Fixa Mensal: {tx_fix_mensal}')
-        total_recebido = tx_fix_mensal*projeto_meses+comissao_recebida
-        st.write(f'Total Recebido no Projeto: R${round(total_recebido,2)}')
+        total_recebido = tx_fix_mensal * projeto_meses + comissao_recebida
+        st.write(f'Total Recebido no Projeto: R${round(total_recebido, 2)}')
+
 
 # Função para exibir a página de Pós
 def pagina_pos_politicas():
