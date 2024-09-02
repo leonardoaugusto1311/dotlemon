@@ -67,6 +67,10 @@ def pagina_dados():
     impostos_pagos = st.number_input("Impostos Pagos (Anual): R$", min_value=0.0, step=0.01, format="%.2f", value=impostos_pagos, key="impostos_pagos_input")
     faturamento = st.number_input("Faturamento (Anual): R$", min_value=0.0, step=0.01, format="%.2f", value=faturamento, key="faturamento_input")
     clientes_medios = st.number_input("Quantidade média de Clientes (Mês):", min_value=0, step=1, format="%d", value=clientes_medios, key="clientes_medios_input")
+    
+
+
+
 
     # Botão de enviar
     if st.button("Enviar", key="dados_enviar_button"):
@@ -81,8 +85,8 @@ def pagina_dados():
             "impostos_pagos": impostos_pagos,
             "aliquota_imposto": (impostos_pagos / faturamento) * 100 if faturamento > 0 else 0,
             "custo_mensal_coberto": round((folha_pagamento + despesas_operacionais + despesas_administrativas) / 12, 2),
-            "contribuicao_cliente": round((folha_pagamento + despesas_operacionais + despesas_administrativas) / (clientes_medios if clientes_medios > 0 else 1), 2),
-            "despesa_receita": round(((folha_pagamento + despesas_operacionais + despesas_administrativas) / (faturamento / 12) if faturamento > 0 else 1) * 100, 2)
+            "contribuicao_cliente": round((folha_pagamento + despesas_operacionais + despesas_administrativas)/12 / (clientes_medios if clientes_medios > 0 else 1), 2),
+            "despesa_receita": round(((folha_pagamento + despesas_operacionais + despesas_administrativas)/12 / (faturamento / 12) if faturamento > 0 else 1) * 100, 2)
         }
         # Atualizar ou inserir os dados na coleção
         colecao_dados.update_one({"cliente_id": st.session_state['cliente_id']}, {'$set': dados_novos}, upsert=True)
@@ -305,7 +309,7 @@ def pagina_avulsos():
         
         total_horass = folha_pagamento13 + folha_pagamento11 + folha_pagamento7 + folha_pagamento9 + folha_pagamento5
         custo_total = (folha_pagamento4 * folha_pagamento5) + (folha_pagamento10 * folha_pagamento11) + (folha_pagamento6 * folha_pagamento7) + (folha_pagamento12 * folha_pagamento13) + (folha_pagamento8 * folha_pagamento9)
-        fator_preco = 1 / (1 - ((folha_pagamento2 / 100) + (folha_pagamento3 / 100) + (aliquota_imposto / 100)))
+        fator_preco = 1 / (1 - (round((folha_pagamento2 / 100),2) + round((folha_pagamento3 / 100),2) + round((aliquota_imposto / 100),2)))
         p_final = custo_total * fator_preco
 
         st.success("Enviado com sucesso!")
